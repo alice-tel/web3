@@ -1,67 +1,157 @@
+:root {
+  /* Colors */
+  --color-text: #333;
+  --color-background: #fff;
+  --color-card-back: lightgray;
+  --color-card-matched: lightgreen;
+  --color-card-border: black;
+
+  /* Layout */
+  --vertical-info-height: 33vh;
+  --vertical-game-height: 67vh;
+  --vertical-spacer-height: 20vh;
+  --horizontal-game-width: 60%;
+  --horizontal-score-width: 20%;
+
+  /* Spacing */
+  --spacing-small: 0.5rem;
+  --spacing-medium: 1rem;
+  --spacing-large: 2rem;
+
+  /* Typography */
+  --font-size-normal: 1rem;
+  --font-size-title: 1.5rem;
+  --font-size-subtitle: 1.2rem;
+  --font-family: Tahoma, Verdana, Arial, sans-serif;
+}
+
 html {
   color-scheme: light dark;
 }
 
 body {
-  width: 35em;
   margin: 0 auto;
-  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: row;
+  padding: 5vh 0;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
-/* Block */
-.btn {
-  text-decoration: none;
-  background-color: white;
-  color: #888;
-  border-radius: 5px;
-  display: inline-block;
-  margin: 10px;
-  font-size: 18px;
-  text-transform: uppercase;
-  font-weight: 600;
-  padding: 10px 5px;
+/* Layout */
+.layout {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+
+  .layout__column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .layout__column--left {
+    width: var(--horizontal-game-width);
+  }
+
+  .layout__column--right {
+    width: var(--horizontal-score-width);
+    padding: var(--spacing-large);
+  }
 }
 
-/* Element */
-.btn__price {
-  color: #FFF;
-  padding-right: 12px;
-  padding-left: 12px;
-  margin-right: -10px; /* realign button text padding */
-  font-weight: 600;
-  background-color: #333;
-  opacity: 0.4;
-  border-radius: 5px 0 0 5px;
+/* Info box */
+.info {
+  height: var(--vertical-info-height);
+  padding: var(--spacing-medium);
+
+  .info__title {
+    font-size: var(--font-size-title);
+    font-weight: bold;
+    margin-bottom: var(--spacing-medium);
+  }
+
+  .info_item {
+    margin-bottom: var(--spacing-small);
+  }
 }
 
-.btn__text {
-  padding: 0 10px;
-  border-radius: 0 5px 5px 0;
+/* Game box */
+.game {
+  height: var(--vertical-game-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .game__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-small);
+  }
 }
 
-/* Modifier */
-.btn--big {
-  font-size: 28px;
-  padding: 10px;
-  font-weight: 400;
+/* Cards */
+.card {
+  width: 15%;
+  height: 10vh;
+  text-align: center;
+  line-height: 10vh;
+  background-color: var(--color-card-back);
+  border: 2px solid var(--color-card-border);
+  cursor: pointer;
+  margin-right: var(--spacing-small);
+
+  .card:last-child {
+    margin-right: 0;
+  }
+
+  .card--flipped {
+    background-color: var(--color-background);
+  }
+
+  .card--matched {
+    background-color: var(--color-card-matched);
+  }
 }
 
-.btn--blue {
-  border-color: #0074D9;
-  color: white;
-  background-color: #0074D9;
+/* Score box */
+.score {
+    height: var(--vertical-game-height);
+    padding: var(--spacing-medium);
+
+  .score__title {
+    font-size: var(--font-size-subtitle);
+    margin-bottom: var(--spacing-medium);
+  }
+
+  .score__list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .score__item {
+    margin-bottom: var(--spacing-small);
+  }
 }
 
-.btn--orange {
-  border-color: #FF4136;
-  color: white;
-  background-color: #FF4136;
+/* Spacer box above score */
+.spacer {
+  height: var(--vertical-spacer-height);
 }
 
-.btn--green {
-  border-color: #3D9970;
-  color: white;
-  background-color: #3D9970;
-}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #f5f5f5;
+    --color-background: #222;
+    --color-card-back: #444;
+    --color-card-border: #777;
+  }
 
-/*# sourceMappingURL=home.css.map */
+  body {
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+}

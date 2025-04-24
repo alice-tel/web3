@@ -1,22 +1,85 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>:)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Memory Game</title>
+  <link rel="stylesheet" href="stylesheets/reset.css"/>
   <link rel="stylesheet" href="stylesheets/home.css" />
-
 </head>
 <body>
-  <div class="header">
-
+  <div class="layout">
+    <div class="layout__column layout__column--left">
+      <div class="info">
+        <p class="info__title">Javascript memory</p>
+        <p class="info__item">Elapsed time: <span class="info__value" id="elapsed-time">0</span></p>
+        <p class="info__item">Pairs found: <span class="info__value" id="pairs-found">0</span></p>
+        <p class="info__item">Remaining time: <span class="info__value" id="remaining-time">0</span></p>
+      </div>
+      <div class="game">
+        <div class="game__row">
+          <div class="card" data-card-id="1">-</div>
+          <div class="card" data-card-id="2">-</div>
+          <div class="card" data-card-id="3">-</div>
+          <div class="card" data-card-id="4">-</div>
+          <div class="card" data-card-id="5">-</div>
+          <div class="card" data-card-id="6">-</div>
+        </div>
+        <div class="game__row">
+          <div class="card" data-card-id="7">-</div>
+          <div class="card" data-card-id="8">-</div>
+          <div class="card" data-card-id="9">-</div>
+          <div class="card" data-card-id="10">-</div>
+          <div class="card" data-card-id="11">-</div>
+          <div class="card" data-card-id="12">-</div>
+        </div>
+        <div class="game__row">
+          <div class="card" data-card-id="13">-</div>
+          <div class="card" data-card-id="14">-</div>
+          <div class="card" data-card-id="15">-</div>
+          <div class="card" data-card-id="16">-</div>
+          <div class="card" data-card-id="17">-</div>
+          <div class="card" data-card-id="18">-</div>
+        </div>
+        <div class="game__row">
+          <div class="card" data-card-id="19">-</div>
+          <div class="card" data-card-id="20">-</div>
+          <div class="card" data-card-id="21">-</div>
+          <div class="card" data-card-id="22">-</div>
+          <div class="card" data-card-id="23">-</div>
+          <div class="card" data-card-id="24">-</div>
+        </div>
+        <div class="game__row">
+          <div class="card" data-card-id="25">-</div>
+          <div class="card" data-card-id="26">-</div>
+          <div class="card" data-card-id="27">-</div>
+          <div class="card" data-card-id="28">-</div>
+          <div class="card" data-card-id="29">-</div>
+          <div class="card" data-card-id="30">-</div>
+        </div>
+        <div class="game__row">
+          <div class="card" data-card-id="31">-</div>
+          <div class="card" data-card-id="32">-</div>
+          <div class="card" data-card-id="33">-</div>
+          <div class="card" data-card-id="34">-</div>
+          <div class="card" data-card-id="35">-</div>
+          <div class="card" data-card-id="36">-</div>
+        </div>
+      </div>
+    </div>
+    <div class="layout__column layout__column--right">
+      <div class="spacer"></div>
+      <div class="score">
+        <p class="score__title">Top five:</p>
+        <ul class="score__list">
+          <li class="score__item">1. -</li>
+          <li class="score__item">2. -</li>
+          <li class="score__item">3. -</li>
+          <li class="score__item">4. -</li>
+          <li class="score__item">5. -</li>
+        </ul>
+      </div>
+    </div>
   </div>
-  <div class="container">
-
-  </div>
-  <div class="footer">
-    
-  </div>
-
 </body>
 </html>
