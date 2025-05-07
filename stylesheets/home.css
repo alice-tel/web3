@@ -7,11 +7,11 @@
   --color-card-border: black;
 
   /* Layout */
-  --vertical-info-height: 33vh;
+  --vertical-info-height: 20vh;
   --vertical-game-height: 67vh;
   --vertical-spacer-height: 20vh;
   --horizontal-game-width: 60%;
-  --horizontal-score-width: 20%;
+  --horizontal-score-width: 30%;
 
   /* Spacing */
   --spacing-small: 0.5rem;
@@ -23,6 +23,16 @@
   --font-size-title: 1.5rem;
   --font-size-subtitle: 1.2rem;
   --font-family: Tahoma, Verdana, Arial, sans-serif;
+
+  /* Breakpoints
+   I would really like to use these in my media queries
+   but css by default does not support this without a preprocessor */
+  --xs: 0;
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
+  --xxl: 1400px;
 }
 
 html {
@@ -33,7 +43,7 @@ body {
   margin: 0 auto;
   font-family: var(--font-family);
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 5vh 0;
   width: 100%;
   height: 100vh;
@@ -41,62 +51,81 @@ body {
 }
 
 /* Layout */
-.layout {
+div.layout {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   justify-content: center;
 
-  .layout__column {
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+  }
+
+  & > div.layout__column {
     display: flex;
     flex-direction: column;
   }
 
-  .layout__column--left {
-    width: var(--horizontal-game-width);
+  div.layout__column--left {
+    @media (min-width: 768px) {
+      width: var(--horizontal-game-width);
+    }
   }
 
-  .layout__column--right {
-    width: var(--horizontal-score-width);
+  & > div.layout__column--right {
     padding: var(--spacing-large);
+
+    @media (min-width: 768px) {
+      width: var(--horizontal-score-width);
+    }
   }
 }
 
 /* Info box */
-.info {
-  height: var(--vertical-info-height);
+div.info {
   padding: var(--spacing-medium);
 
-  .info__title {
+  @media (min-width: 768px) {
+    height: var(--vertical-info-height);
+  }
+
+  & > p.info__title {
+    display: flex;
+    justify-content: center;
     font-size: var(--font-size-title);
     font-weight: bold;
     margin-bottom: var(--spacing-medium);
   }
 
-  .info_item {
+  & > p.info__item {
+    display: flex;
+    justify-content: center;
     margin-bottom: var(--spacing-small);
   }
 }
 
 /* Game box */
-.game {
+div.game {
   height: var(--vertical-game-height);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  .game__row {
+  & > div.game__row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: var(--spacing-small);
+    margin-left: var(--spacing-small);
   }
 }
 
 /* Cards */
-.card {
-  width: 15%;
-  height: 10vh;
+div.card {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
   text-align: center;
   line-height: 10vh;
   background-color: var(--color-card-back);
@@ -104,42 +133,52 @@ body {
   cursor: pointer;
   margin-right: var(--spacing-small);
 
-  .card:last-child {
+  @media (min-width: 768px) {
+    width: 15%;
+    height: 10vh;
+  }
+
+  & > div.card:last-child {
     margin-right: 0;
   }
 
-  .card--flipped {
+  & > div.card--flipped {
     background-color: var(--color-background);
   }
 
-  .card--matched {
+  & > div.card--matched {
     background-color: var(--color-card-matched);
   }
 }
 
 /* Score box */
-.score {
+div.score {
     height: var(--vertical-game-height);
     padding: var(--spacing-medium);
 
-  .score__title {
+  & > p.score__title {
     font-size: var(--font-size-subtitle);
     margin-bottom: var(--spacing-medium);
   }
 
-  .score__list {
+  & > ul.score__list {
     list-style-type: none;
     padding: 0;
   }
 
-  .score__item {
+  & > li.score__item {
     margin-bottom: var(--spacing-small);
   }
 }
 
 /* Spacer box above score */
-.spacer {
-  height: var(--vertical-spacer-height);
+div.spacer {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+    height: var(--vertical-spacer-height);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
