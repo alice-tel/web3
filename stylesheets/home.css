@@ -13,6 +13,7 @@
   --vertical-spacer-height: 20vh;
   --horizontal-game-width: 60%;
   --horizontal-score-width: 30%;
+  --progress-border-radius: 20px;
 
   /* Spacing */
   --spacing-small: 0.5rem;
@@ -116,13 +117,14 @@ div.info {
     height: 40px;
     width: 250px;
     background-color: var(--color-card-back);
-
+    border-radius: var(--progress-border-radius);
 
   }
   div.info__time__progressbar--bar{
     height: 65%;
     width: 90%;
     background-color: var(--color-text);
+    border-radius: var(--progress-border-radius);
   }
 }
 
@@ -145,14 +147,16 @@ div.game {
 /* Cards */
 div.card {
   display: inline-block;
-  width: 100%;
   height: 100%;
-  text-align: center;
+  width: 13.3%;
   line-height: 10vh;
+  text-align: center;
+  aspect-ratio: 1 / 1;
+  box-sizing: border-box;
   background-color: var(--color-card-back);
-  border: 2px solid var(--color-card-border);
   cursor: pointer;
   margin-right: var(--spacing-small);
+  border-radius: var(--progress-border-radius);
 
   @media (min-width: 768px) {
     width: 15%;
