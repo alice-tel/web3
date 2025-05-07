@@ -3,6 +3,7 @@
   --color-text: #333;
   --color-background: #fff;
   --color-card-back: lightgray;
+  --color-card-back-hover: gray;
   --color-card-matched: lightgreen;
   --color-card-border: black;
 
@@ -76,6 +77,26 @@ body {
   .info_item {
     margin-bottom: var(--spacing-small);
   }
+
+  div.info__time__progressbar {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--spacing-small);
+    height: 40px;
+    width: 250px;
+    background-color: var(--color-card-back);
+
+
+  }
+  div.info__time__progressbar__bar{
+    height: 65%;
+    width: 90%;
+    background-color: var(--color-text);
+  }
 }
 
 /* Game box */
@@ -117,10 +138,17 @@ body {
   }
 }
 
+.card:hover {
+  background-color: var(--color-card-back-hover);
+}
+
+.side__bar {
+  height: var(--vertical-game-height);
+  padding: var(--spacing-medium);
+}
+
 /* Score box */
 .score {
-    height: var(--vertical-game-height);
-    padding: var(--spacing-medium);
 
   .score__title {
     font-size: var(--font-size-subtitle);
@@ -135,6 +163,18 @@ body {
   .score__item {
     margin-bottom: var(--spacing-small);
   }
+}
+.play__time {
+
+  margin-top: var(--spacing-medium);
+}
+.play__time__title {
+  display: inline;
+  font-size: var(--font-size-subtitle);
+  margin-bottom: var(--spacing-medium);
+}
+.play__time__time {
+  display: inline;
 }
 
 /* Spacer box above score */
