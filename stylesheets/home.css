@@ -99,7 +99,7 @@ div.info {
     margin-bottom: var(--spacing-medium);
   }
 
-  & > p.info__item {
+  & > div,p.info__item {
     display: flex;
     justify-content: center;
     margin-bottom: var(--spacing-small);
@@ -119,7 +119,7 @@ div.info {
 
 
   }
-  div.info__time__progressbar__bar{
+  div.info__time__progressbar--bar{
     height: 65%;
     width: 90%;
     background-color: var(--color-text);
@@ -159,6 +159,10 @@ div.card {
     height: 10vh;
   }
 
+  &:hover {
+    background-color: var(--color-card-back-hover);
+  }
+
   & > div.card:last-child {
     margin-right: 0;
   }
@@ -172,24 +176,13 @@ div.card {
   }
 }
 
-.card:hover {
-  background-color: var(--color-card-back-hover);
-}
-
-.side__bar {
+div.sidebar {
   height: var(--vertical-game-height);
   padding: var(--spacing-medium);
 }
 
 /* Score box */
-<<<<<<< HEAD
 div.score {
-    height: var(--vertical-game-height);
-    padding: var(--spacing-medium);
-=======
-.score {
->>>>>>> origin/main
-
   & > p.score__title {
     font-size: var(--font-size-subtitle);
     margin-bottom: var(--spacing-medium);
@@ -204,16 +197,17 @@ div.score {
     margin-bottom: var(--spacing-small);
   }
 }
-.play__time {
-
+div.playtime {
   margin-top: var(--spacing-medium);
 }
-.play__time__title {
+
+div.playtime__title {
   display: inline;
   font-size: var(--font-size-subtitle);
   margin-bottom: var(--spacing-medium);
 }
-.play__time__time {
+
+div.playtime__time {
   display: inline;
 }
 
