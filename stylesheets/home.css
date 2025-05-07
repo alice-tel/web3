@@ -211,6 +211,33 @@ div.playtime__time {
   display: inline;
 }
 
+div.settings {
+  margin-top: var(--spacing-medium);
+}
+
+div.settings__board {
+  margin-top: var(--spacing-medium);
+}
+
+div.settings__colors {
+  margin-top: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+}
+
+select.board__selector {
+  height: 25px;
+  margin-top: var(--spacing-small);
+}
+
+button.colors_card_button {
+  font-size: var(--font-size-normal);
+  max-width: 60%;
+  height: 50px;
+  margin-top: var(--spacing-small);
+
+}
+
 /* Spacer box above score */
 div.spacer {
   display: none;
