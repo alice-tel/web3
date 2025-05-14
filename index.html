@@ -6,9 +6,8 @@
   <title>Memory Game</title>
   <link rel="stylesheet" href="stylesheets/reset.css"/>
   <link rel="stylesheet" href="stylesheets/home.css" />
-  <script src="scripts/Board.js"></script>
 </head>
-<body onload="onBodyLoad();">
+<body>
   <div class="layout">
     <div class="layout__column layout__column--left">
       <div class="info">
@@ -102,14 +101,24 @@
           </div>
           </div>
           <div class="settings__colors">
-              <button class="colors__card--card colors_card_button">Card Color</button>
-              <button class="colors__open--card colors_card_button">Open Color</button>
-              <button class="colors__found--card colors_card_button">Found Color</button>
+<!--              <button class="colors__card&#45;&#45;card colors_card_button">Card Color</button>-->
+<!--              <button class="colors__open&#45;&#45;card colors_card_button">Open Color</button>-->
+<!--              <button class="colors__found&#45;&#45;card colors_card_button">Found Color</button>-->
+            <label>
+              Card Color: <input class="colors__card--card colors_card_button" type="color" data-color-type="card">
+            </label>
+            <label>
+              Open Color: <input class="colors__open--card colors_card_button" type="color" data-color-type="open">
+            </label>
+            <label>
+              Found Color: <input class="colors__found--card colors_card_button" type="color" data-color-type="found"/>
+            </label>
           </div>
         </div>
       </div>
 
     </div>
   </div>
+  <script src="scripts/script.js" type="module"></script>
 </body>
 </html>

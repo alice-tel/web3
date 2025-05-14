@@ -165,7 +165,6 @@ div.card {
 
   &:hover {
     filter: brightness(150%);
-    /*background-color: var(--color-card-back-hover);*/
   }
 
   & > div.card:last-child {
