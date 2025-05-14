@@ -38,24 +38,20 @@ export function addCards(cards){
 
 export function setBoardCardsColor(color) {
     boardCardsColor = color;
-
-    for (const boardCard of boardCards) {
-        if (!isCardFlipped(boardCard))
-            boardCard.style.backgroundColor = color;
-    }
+    setBoardCardBackColor(color, boardCard => !isCardFlipped(boardCard));
 }
 export function setBoardOpenColor(color) {
     boardOpenColor = color;
-    for (const boardCard of boardCards) {
-        if (isCardFlipped(boardCard) && !isCardFound(boardCard))
-            boardCard.style.backgroundColor = color;
-    }
+    setBoardCardBackColor(color, boardCard => isCardFlipped(boardCard) && !isCardFound(boardCard))
 }
 export function setBoardFoundColor(color) {
     boardFoundColor = color;
+    setBoardCardBackColor(color, boardCard => isCardFlipped(boardCard) && isCardFound(boardCard));
+}
 
+function setBoardCardBackColor(color, conditionCB) {
     for (const boardCard of boardCards) {
-        if (isCardFlipped(boardCard) && isCardFound(boardCard))
+        if (conditionCB(boardCard))
             boardCard.style.backgroundColor = color;
     }
 }
