@@ -63,7 +63,7 @@ export function setBoardFoundColor(color) {
 function cardClick(event){
     const card = event.target;
     let degrees = 0;
-    if (card.getAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR) === BOOLEAN_ATR_TRUE) return;
+    if (isCardFlipping(card) || isCardFound(card)) return;
     let flipCardAni = setInterval(
         () => {
             let isFlipped = isCardFlipped(card);
@@ -100,6 +100,10 @@ function cardClick(event){
 
 function isCardFlipped(card) {
     return isAttributeTrue(card.getAttribute(DATA_CARD_FLIPPED_ATR))
+}
+
+function isCardFlipping(card){
+    return isAttributeTrue(card.getAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR));
 }
 
 function isCardFound(card) {
