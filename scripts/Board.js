@@ -48,6 +48,7 @@ function cardClick(event){
             {
                 // todo this 'LL' must be an character picket random later V
                 card.innerText = isFlipped ? DEFAULT_TEXT_OF_CARD : "LL";
+                changeCardColor(!isFlipped, card);
                 actualDegrees = 180-degrees;
             }
             card.style.transform = `rotateY(${actualDegrees}deg)`;
@@ -59,6 +60,9 @@ function isCardFlipped(card) {
     const flipArt = card.getAttribute(DATA_CARD_FLIPPED_ATR);
     return !(flipArt === FLIPPED_ATR_NOT_FLIPPED || flipArt == null);
 }
+
+function changeCardColor(isFlipped, card)
+{ card.style.backgroundColor = isFlipped ? "gray" : "#444"; }
 
 function updateCardInclusion(dataCardId, isFlipped){
     let index = selectedCards.indexOf(dataCardId);
