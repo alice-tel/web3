@@ -8,7 +8,7 @@ import {
     BOOLEAN_ATR_FALSE,
     BOOLEAN_ATR_TRUE,
     isAttributeTrue
-} from "../Util/Attriburtes.js";
+} from "../Util/Attributes.js";
 
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
