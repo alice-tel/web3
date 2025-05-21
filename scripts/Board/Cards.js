@@ -11,7 +11,7 @@ import {
 } from "../Util/Attributes.js";
 
 import { addOneToPairsFound, checkForWin } from "./Game.js";
-import { cardCharacters } from "../Settings/CardSettings.js";
+import {cardCharacters, cardRowSize, DEFAULT_BACK_CHARACTERS} from "../Settings/CardSettings.js";
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
 export const MAX_COUNT_FLIPPED_CARDS = 2;
@@ -25,37 +25,42 @@ const DATA_CARD_FLIPPED_ATR = 'data-card-flipped';
 const DATA_CARD_FLIPPING_ANIMATION_ATR = 'data-card-flipping-animation';
 
 
-
-let boardCards; // maybe move this down to onBodyLoad, if we eventually do not use this in the context of this script
+let gameBoard = document.getElementsByClassName('game')[0];
+let boardCards = []; // maybe move this down to onBodyLoad, if we eventually do not use this in the context of this script
 let selectedCards = [];
 
-export function addCards(cards){
-    boardCards = cards;
-    for (const card of cards) {
-        card.addEventListener("click", cardClick);
-    }
 
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].setAttribute(DATA_CARD_ID_ATR, i.toString());
-        cards[i].setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_FALSE);
-        cards[i].setAttribute(DATA_CARD_FLIPPED_ATR, BOOLEAN_ATR_FALSE);
-        cards[i].setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
-        cards[i].addEventListener("click", cardClick);
+export function createCards(){
+    boardCards.innerHTML = '';
+    for (let i = 1; i <= cardRowSize; i++) {
+        const newRow = document.createElement("div");
+        newRow.setAttribute("class", "game__row");
+        for (let j = 1; j <= cardRowSize; j++) {
+            let card = createCard((i*cardRowSize)+j);
+            boardCards.push(card);
+            newRow.appendChild(card);
+        }
+        gameBoard.appendChild(newRow);
     }
+    return boardCards;
+}
+
+function createCard(cardId){
+    const newCard = document.createElement("div");
+    newCard.setAttribute("class", DEFAULT_CARD_CLASS_NAME);
+    setCardId(newCard, cardId);
+    newCard.addEventListener("click", cardClick);
+    newCard.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_FALSE);
+    newCard.setAttribute(DATA_CARD_FLIPPED_ATR, BOOLEAN_ATR_FALSE);
+    newCard.setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
+
+    newCard.innerHTML = DEFAULT_BACK_CHARACTERS;
+    return newCard;
 }
 
 export function resetCards() {
-    selectedCards = [];
-
-    for (const card of boardCards) {
-        card.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_FALSE);
-        card.setAttribute(DATA_CARD_FLIPPED_ATR, BOOLEAN_ATR_FALSE);
-        card.setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
-
-        card.style.transform = '';
-        card.style.backgroundColor = boardCardsColor;
-        card.innerText = DEFAULT_TEXT_OF_CARD;
-    }
+    gameBoard.innerHTML = "";
+    createCards();
 }
 
 export function setBoardCardsColor(color) {
@@ -148,6 +153,10 @@ function getCardId(card){
 
 function setCardFound(card) {
     card.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_TRUE);
+}
+
+function setCardId(card, cardId) {
+    card.setAttribute(DATA_CARD_ID_ATR, cardId);
 }
 
 function setFlippedCardsFound(){

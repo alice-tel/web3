@@ -1,14 +1,12 @@
-import { addCards, addMemListToCards, DEFAULT_CARD_CLASS_NAME } from './Board/Cards.js'
+import {addMemListToCards, createCards, DEFAULT_CARD_CLASS_NAME} from './Board/Cards.js'
 import { loadColorSettings } from './Settings/ColorSettings.js'
 import { randomizeMemList, memList } from './Board/MemListShuffle.js'
-import {addCharactersOnCardsListener} from "./Settings/CardSettings.js";
+import {addBoardSizeListener, addCharactersOnCardsListener} from "./Settings/CardSettings.js";
 import { initializeGame } from './Board/Game.js';
 
-let cards = document.getElementsByClassName(DEFAULT_CARD_CLASS_NAME);
+let cards= createCards();
 
 initializeGame(cards);
-
-addCards(cards);
 
 loadColorSettings();
 
@@ -16,5 +14,5 @@ randomizeMemList(cards);
 
 addMemListToCards(memList);
 
+addBoardSizeListener();
 addCharactersOnCardsListener();
-console.log(`Game started with ${cards.length} cards`);

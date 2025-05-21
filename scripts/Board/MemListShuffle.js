@@ -24,7 +24,7 @@ function getMemOptionCount(){
     return getTotalAmountOfCards() / MAX_COUNT_FLIPPED_CARDS;
 }
 
-export function randomizeMemList(cards, ){
+export function randomizeMemList(cards){
     let listOfOptions = DEFAULT_MEM_LIST_OPTIONS.slice(0, cards.length/MAX_COUNT_FLIPPED_CARDS);
 
     if (listOfOptions.length < getMemOptionCount())
