@@ -10,6 +10,7 @@ import {
     isAttributeTrue
 } from "../Util/Attributes.js";
 
+import { addOneToPairsFound } from "./Game.js";
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
 export const MAX_COUNT_FLIPPED_CARDS = 2;
@@ -131,6 +132,7 @@ function setFlippedCardsFound(){
         updateCardColor(card);
     }
     selectedCards = [];
+    addOneToPairsFound();
 }
 
 function flipAllFlippedCards()
