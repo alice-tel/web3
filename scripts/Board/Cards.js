@@ -12,15 +12,16 @@ import {
 
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
+export const MAX_COUNT_FLIPPED_CARDS = 2;
 const CARD_FLIP_SPEED = 2; // In degrees per step.
 const CARD_FLIPPING_POINT = 85; // The amount of degrees before the character of an card has been changed.
 const CARD_MAX_FLIP_DEGREES = 180;
 const DEFAULT_TEXT_OF_CARD = '-';
 const DATA_CARD_ID_ATR = 'data-card-id';
+const DATA_CARD_MEM_VAL_ATR = 'data-card-mem-val';
 const DATA_CARD_FOUND_ATR = 'data-card-found';
 const DATA_CARD_FLIPPED_ATR = 'data-card-flipped';
 const DATA_CARD_FLIPPING_ANIMATION_ATR = 'data-card-flipping-animation';
-const MAX_COUNT_FLIPPED_CARDS = 2;
 
 let boardCardsColor = CARD_COLOR_DEFAULT;
 let boardOpenColor = OPEN_COLOR_DEFAULT;
@@ -58,6 +59,11 @@ function setBoardCardBackColor(color, conditionCB) {
 
 function cardClick(event){
     const card = event.target;
+    if (isCardFlipped(card)) return;
+    flipCard(card);
+}
+
+function flipCard(card){
     let degrees = 0;
     if (isCardFlipping(card) || isCardFound(card)) return;
     let flipCardAni = setInterval(
@@ -65,7 +71,7 @@ function cardClick(event){
             let isFlipped = isCardFlipped(card);
             let dataCardId = card.getAttribute(DATA_CARD_ID_ATR);
 
-            if (!isFlipped && selectedCards.length >= 2 && !selectedCards.includes(dataCardId)) {
+            if (!isFlipped && selectedCards.length >= MAX_COUNT_FLIPPED_CARDS && !selectedCards.includes(dataCardId)) {
                 clearInterval(flipCardAni);
                 return;
             }
@@ -74,6 +80,12 @@ function cardClick(event){
                 clearInterval(flipCardAni);
                 card.setAttribute(DATA_CARD_FLIPPED_ATR, isFlipped ? BOOLEAN_ATR_FALSE : BOOLEAN_ATR_TRUE);
                 card.setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
+
+                if(!areAllCardsFlipped()) return;
+
+                    if (cardsFlippedSameValue()) setFlippedCardsFound();
+                    else flipBackTimer();
+
             }
             else {
                 if (degrees <= 0){
@@ -86,12 +98,46 @@ function cardClick(event){
                 if (degrees > CARD_FLIPPING_POINT)
                 {
                     updateCardText(!isFlipped, card);
-                    updateCardColor(!isFlipped, card);
+                    updateCardColor(card, !isFlipped);
                     actualDegrees = 180-degrees;
                 }
                 card.style.transform = `rotateY(${actualDegrees}deg)`;
             }
         });
+}
+
+export function addMemListToCards(memList) {
+    for (let i = 0; i < boardCards.length; i++) {
+        boardCards[i].setAttribute(DATA_CARD_MEM_VAL_ATR, memList[i]);
+    }
+}
+
+function getCardMemVal(card){
+    return card.getAttribute(DATA_CARD_MEM_VAL_ATR);
+}
+
+function getCardId(card){
+    return card.getAttribute(DATA_CARD_ID_ATR);
+}
+
+function setCardFound(card) {
+    card.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_TRUE);
+}
+
+function setFlippedCardsFound(){
+    for (const cardId of selectedCards) {
+        let card = getCardWithCardId(cardId);
+        setCardFound(card);
+        updateCardColor(card);
+    }
+    selectedCards = [];
+}
+
+function flipAllFlippedCards()
+{
+    for (const cardId of selectedCards) {
+        flipCard(getCardWithCardId(cardId));
+    }
 }
 
 function isCardFlipped(card) {
@@ -106,15 +152,49 @@ function isCardFound(card) {
     return isAttributeTrue(card.getAttribute(DATA_CARD_FOUND_ATR))
 }
 
+function areAllCardsFlipped(){
+    return selectedCards.length === MAX_COUNT_FLIPPED_CARDS;
+}
 
+function cardsFlippedSameValue(){
+    let areSame = true;
+    let lastCard = getCardWithCardId(selectedCards[0]);
+    for (let i = 1; i < selectedCards.length; i++) {
+        let card = getCardWithCardId(selectedCards[i]);
+        areSame &= hasSameMemVal(lastCard, card);
+        lastCard = card;
+    }
+    return areSame;
+}
 
-function updateCardColor(isFlipped, card)
-{ card.style.backgroundColor = isFlipped ? boardOpenColor : boardCardsColor; }
+function getCardWithCardId(cardId){
+    for (const card of boardCards) {
+        let id = getCardId(card);
+        if (id === cardId) return card;
+    }
+
+    throw Error(`Now Card Found with id: ${cardId}`);
+}
+
+function hasSameMemVal(card1, card2) {
+    return getCardMemVal(card1) === getCardMemVal(card2);
+}
+
+function flipBackTimer(){
+    setTimeout(() => flipAllFlippedCards(), 1000)
+}
+
+function updateCardColor(card, isFlipped = undefined)
+{
+    let flippedColor = isCardFound(card) ? boardFoundColor : boardOpenColor;
+    if (isFlipped === undefined) isFlipped = isCardFlipped(card);
+    card.style.backgroundColor = isFlipped ? flippedColor : boardCardsColor;
+}
 
 function updateCardText(isFlipped, card)
 {
-    // todo this 'LL' must be an character picket random later V
-    card.innerText = isFlipped ? "LL" : DEFAULT_TEXT_OF_CARD;
+    let mem = card.getAttribute(DATA_CARD_MEM_VAL_ATR);
+    card.innerText = isFlipped ? mem : DEFAULT_TEXT_OF_CARD;
 }
 
 function updateCardInclusion(dataCardId, isFlipped){
