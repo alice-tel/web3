@@ -11,13 +11,13 @@ import {
 } from "../Util/Attributes.js";
 
 import { addOneToPairsFound } from "./Game.js";
+import { cardCharacters } from "../Settings/CardSettings.js";
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
 export const MAX_COUNT_FLIPPED_CARDS = 2;
 const CARD_FLIP_SPEED = 2; // In degrees per step.
-const CARD_FLIPPING_POINT = 85; // The amount of degrees before the character of an card has been changed.
+const CARD_FLIPPING_POINT = 85; // The amount of degrees before the character of a card has been changed.
 const CARD_MAX_FLIP_DEGREES = 180;
-const DEFAULT_TEXT_OF_CARD = '-';
 const DATA_CARD_ID_ATR = 'data-card-id';
 const DATA_CARD_MEM_VAL_ATR = 'data-card-mem-val';
 const DATA_CARD_FOUND_ATR = 'data-card-found';
@@ -49,6 +49,14 @@ export function setBoardOpenColor(color) {
 export function setBoardFoundColor(color) {
     boardFoundColor = color;
     setBoardCardBackColor(color, boardCard => isCardFlipped(boardCard) && isCardFound(boardCard));
+}
+
+export function setBoardBackCharacters(text) {
+    for (const boardCard of boardCards) {
+        if (!isCardFlipped(boardCard)) {
+            boardCard.innerText = text;
+        }
+    }
 }
 
 function setBoardCardBackColor(color, conditionCB) {
@@ -196,7 +204,7 @@ function updateCardColor(card, isFlipped = undefined)
 function updateCardText(isFlipped, card)
 {
     let mem = card.getAttribute(DATA_CARD_MEM_VAL_ATR);
-    card.innerText = isFlipped ? mem : DEFAULT_TEXT_OF_CARD;
+    card.innerText = isFlipped ? mem : cardCharacters;
 }
 
 function updateCardInclusion(dataCardId, isFlipped){
@@ -204,7 +212,7 @@ function updateCardInclusion(dataCardId, isFlipped){
 
     if (!isFlipped && selectedCards.length < MAX_COUNT_FLIPPED_CARDS && index < 0)
         selectedCards.push(dataCardId);
-    //todo maybe make the below logic scaleble instead of hardcoding for max 2 flipped cards
+    //todo maybe make the below logic scalable instead of hardcoding for max 2 flipped cards
     else if (index === 0)
         selectedCards = selectedCards.slice(1, 2);
     else if (index === 1)
