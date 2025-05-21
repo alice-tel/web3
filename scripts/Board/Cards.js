@@ -10,7 +10,7 @@ import {
     isAttributeTrue
 } from "../Util/Attributes.js";
 
-import { addOneToPairsFound } from "./Game.js";
+import { addOneToPairsFound, checkForWin } from "./Game.js";
 import { cardCharacters } from "../Settings/CardSettings.js";
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
@@ -33,6 +33,28 @@ export function addCards(cards){
     boardCards = cards;
     for (const card of cards) {
         card.addEventListener("click", cardClick);
+    }
+
+    for (let i = 0; i < cards.length; i++) {
+        cards[i].setAttribute(DATA_CARD_ID_ATR, i.toString());
+        cards[i].setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_FALSE);
+        cards[i].setAttribute(DATA_CARD_FLIPPED_ATR, BOOLEAN_ATR_FALSE);
+        cards[i].setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
+        cards[i].addEventListener("click", cardClick);
+    }
+}
+
+export function resetCards() {
+    selectedCards = [];
+
+    for (const card of boardCards) {
+        card.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_FALSE);
+        card.setAttribute(DATA_CARD_FLIPPED_ATR, BOOLEAN_ATR_FALSE);
+        card.setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
+
+        card.style.transform = '';
+        card.style.backgroundColor = boardCardsColor;
+        card.innerText = DEFAULT_TEXT_OF_CARD;
     }
 }
 
@@ -136,6 +158,17 @@ function setFlippedCardsFound(){
     }
     selectedCards = [];
     addOneToPairsFound();
+}
+
+export function areAllCardsFound() {
+    if (!boardCards || boardCards.length === 0) return false;
+
+    for (const card of boardCards) {
+        if (!isCardFound(card)) {
+            return false;
+        }
+    } 
+    return true;
 }
 
 function flipAllFlippedCards()
