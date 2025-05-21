@@ -8,6 +8,8 @@ export function addOneToPairsFound(){
     pairsFoundLabel.innerText = totalPairsFound.toString();
 }
 
+
+
 // todo: Won check
 //  1. check if all the cards are found
 //  2. if true then go to won state
@@ -16,8 +18,6 @@ export function addOneToPairsFound(){
 // todo: elapsed time
 
 // todo: remaining time and progressbar
-
-// todo: character on board set
 
 // todo: board size set
 

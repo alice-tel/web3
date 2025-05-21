@@ -13,6 +13,10 @@ let cardColorPicker;
 let openColorPicker;
 let foundColorPicker;
 
+export let boardCardsColor = CARD_COLOR_DEFAULT;
+export let boardOpenColor = OPEN_COLOR_DEFAULT;
+export let boardFoundColor = FOUND_COLOR_DEFAULT;
+
 export function loadColorSettings(){
     addDefaultColors();
 }
@@ -38,14 +42,17 @@ function colorSelectedChanged(event){
 
     switch(colorPicker.getAttribute(DATA_COLOR_TYPE_ATR)){
         case "card": {
+            boardCardsColor = color;
             setBoardCardsColor(color);
             break;
         }
         case "open": {
+            boardOpenColor = color;
             setBoardOpenColor(color);
             break;
         }
         case "found": {
+            boardFoundColor = color;
             setBoardFoundColor(color);
             break;
         }

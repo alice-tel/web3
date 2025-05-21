@@ -1,7 +1,7 @@
 import {
-    CARD_COLOR_DEFAULT,
-    FOUND_COLOR_DEFAULT,
-    OPEN_COLOR_DEFAULT
+    boardCardsColor,
+    boardOpenColor,
+    boardFoundColor,
 } from '../Settings/ColorSettings.js'
 
 import {
@@ -24,9 +24,7 @@ const DATA_CARD_FOUND_ATR = 'data-card-found';
 const DATA_CARD_FLIPPED_ATR = 'data-card-flipped';
 const DATA_CARD_FLIPPING_ANIMATION_ATR = 'data-card-flipping-animation';
 
-let boardCardsColor = CARD_COLOR_DEFAULT;
-let boardOpenColor = OPEN_COLOR_DEFAULT;
-let boardFoundColor = FOUND_COLOR_DEFAULT;
+
 
 let boardCards; // maybe move this down to onBodyLoad, if we eventually do not use this in the context of this script
 let selectedCards = [];
@@ -39,15 +37,12 @@ export function addCards(cards){
 }
 
 export function setBoardCardsColor(color) {
-    boardCardsColor = color;
     setBoardCardBackColor(color, boardCard => !isCardFlipped(boardCard));
 }
 export function setBoardOpenColor(color) {
-    boardOpenColor = color;
     setBoardCardBackColor(color, boardCard => isCardFlipped(boardCard) && !isCardFound(boardCard))
 }
 export function setBoardFoundColor(color) {
-    boardFoundColor = color;
     setBoardCardBackColor(color, boardCard => isCardFlipped(boardCard) && isCardFound(boardCard));
 }
 
