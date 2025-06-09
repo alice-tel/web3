@@ -59,7 +59,7 @@ div.layout {
   width: 100%;
   justify-content: center;
 
-  @media (min-width: 768px) {
+  @media (min-width: 990px) {
     display: flex;
     flex-direction: row;
   }
@@ -70,7 +70,7 @@ div.layout {
   }
 
   div.layout__column--left {
-    @media (min-width: 768px) {
+    @media (min-width: 990px) {
       width: var(--horizontal-game-width);
     }
   }
@@ -78,7 +78,7 @@ div.layout {
   & > div.layout__column--right {
     padding: var(--spacing-large);
 
-    @media (min-width: 768px) {
+    @media (min-width: 990px) {
       width: var(--horizontal-score-width);
     }
   }
@@ -88,7 +88,7 @@ div.layout {
 div.info {
   padding: var(--spacing-medium);
 
-  @media (min-width: 768px) {
+  @media (min-width: 990px) {
     height: var(--vertical-info-height);
   }
 
@@ -133,12 +133,12 @@ div.game {
   height: var(--vertical-game-height);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
 
   & > div.game__row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     margin-bottom: var(--spacing-small);
     margin-left: var(--spacing-small);
   }
@@ -146,7 +146,9 @@ div.game {
 
 /* Cards */
 div.card {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 13.3%;
   line-height: 10vh;
@@ -157,10 +159,10 @@ div.card {
   cursor: pointer;
   margin-right: var(--spacing-small);
   border-radius: var(--progress-border-radius);
-  justify-content: space-around;
 
-  @media (min-width: 768px) {
-    width: 15%;
+  @media (min-width: 650px) {
+    width: 10vh;
+    /*width:  15%;*/
     height: 10vh;
   }
 
@@ -187,10 +189,15 @@ div.sidebar {
 }
 img.card-image {
   object-fit: cover;
-  justify-self: center;
+  /*justify-self: center;*/
   height: 90%;
   width: 90%;
   border-radius: var(--progress-border-radius);
+}
+
+p.card_text {
+  line-height: 0;
+  height: 0;
 }
 
 /* Score box */
@@ -254,7 +261,7 @@ button.colors_card_button {
 div.spacer {
   display: none;
 
-  @media (min-width: 768px) {
+  @media (min-width: 990px) {
     display: block;
     height: var(--vertical-spacer-height);
   }
