@@ -157,6 +157,7 @@ div.card {
   cursor: pointer;
   margin-right: var(--spacing-small);
   border-radius: var(--progress-border-radius);
+  justify-content: space-around;
 
   @media (min-width: 768px) {
     width: 15%;
@@ -183,6 +184,13 @@ div.card {
 div.sidebar {
   height: var(--vertical-game-height);
   padding: var(--spacing-medium);
+}
+img.card-image {
+  object-fit: cover;
+  justify-self: center;
+  height: 90%;
+  width: 90%;
+  border-radius: var(--progress-border-radius);
 }
 
 /* Score box */

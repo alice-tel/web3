@@ -1,18 +1,27 @@
-import {addMemListToCards, createCards, DEFAULT_CARD_CLASS_NAME} from './Board/Cards.js'
-import { loadColorSettings } from './Settings/ColorSettings.js'
-import { randomizeMemList, memList } from './Board/MemListShuffle.js'
-import {addBoardSizeListener, addCharactersOnCardsListener} from "./Settings/CardSettings.js";
+import {addMemListToCards, createAddCards, getCards, setCardImages, MAX_COUNT_FLIPPED_CARDS} from './Board/Cards.js'
+import {getMemListOptions, randomizeMemList} from './Board/MemListShuffle.js'
 import { initializeGame } from './Board/Game.js';
+import { setupSettings } from "./Settings/Settings.js";
+import {fetchImages} from "./Api/Image/ImageApi.js";
+import {cardImageType} from "./Settings/ImageSettings.js";
 
-let cards= createCards();
+export function resetBoard(){
+    createAddCards();
+    let cards= getCards();
 
-initializeGame(cards);
+    let memList = getMemListOptions(cards.length);
+    let randomMemList = randomizeMemList(memList);
+    addMemListToCards(randomMemList);
 
-loadColorSettings();
+    fetchImages(cardImageType,cards.length/MAX_COUNT_FLIPPED_CARDS)
+        .then(urls => {
+            const mappedUrls = {};
+            memList.map(option => mappedUrls[option] = urls.pop());
+            setCardImages(mappedUrls);
+        });
 
-randomizeMemList(cards);
+    initializeGame(cards);
+}
 
-addMemListToCards(memList);
-
-addBoardSizeListener();
-addCharactersOnCardsListener();
+setupSettings()
+resetBoard();

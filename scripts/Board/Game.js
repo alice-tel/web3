@@ -2,10 +2,9 @@
 const pairsFoundLabel = document.getElementById('pairs-found');
 let totalPairsFound = 0;
 let totalPairsInGame = 0;
-let boardCards = [];
 
 export function initializeGame(cards) {
-    boardCards = cards;
+
     totalPairsFound = 0;
     totalPairsInGame = cards.length / 2;
     pairsFoundLabel.innerText = totalPairsFound.toString();
@@ -74,4 +73,4 @@ function resetAllCards() {
 
 // todo: board size set
 
-export { boardCards, totalPairsInGame, checkForWin };
+export { totalPairsInGame, checkForWin };
