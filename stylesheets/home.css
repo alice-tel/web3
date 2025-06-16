@@ -111,13 +111,16 @@ div.info {
     flex-direction: row;
     justify-items: center;
     align-content: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     margin-top: var(--spacing-small);
     height: 40px;
     width: 250px;
     background-color: var(--color-card-back);
     border-radius: var(--progress-border-radius);
+    overflow: hidden; /* fix for progressbar overflow */
+    margin-left: auto;
+    margin-right: auto;
 
   }
   div.info__time__progressbar--bar{
@@ -125,6 +128,23 @@ div.info {
     width: 90%;
     background-color: var(--color-text);
     border-radius: var(--progress-border-radius);
+    align-self: center;
+    margin-left: 5%;
+    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    min-width: 0; /* make sure the bar can actually shrink to 0 */
+  }
+
+  button.new-game-button{
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: var(--color-text);
+    color: var(--color-background);
+    border: none;
+    border-radius: var(--progress-border-radius);
+    cursor: pointer;
+    font-family: var(--font-family);
   }
 }
 
@@ -255,6 +275,20 @@ button.colors_card_button {
   height: 50px;
   margin-top: var(--spacing-small);
 
+}
+
+div.time-up-message{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 100;
+  text-align: center;
 }
 
 /* Spacer box above score */

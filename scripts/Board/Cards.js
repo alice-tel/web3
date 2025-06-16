@@ -9,7 +9,7 @@ import {
     BOOLEAN_ATR_TRUE,
 } from "../Util/Attributes.js";
 
-import { addOneToPairsFound } from "./Game.js";
+import { addOneToPairsFound, isGameStarted } from "./Game.js";
 import {cardRowSize} from "../Settings/CardSizeSetting.js";
 import {cardCharacters} from "../Settings/CardCharactersSetting.js";
 import {hideImageOfCard, setCardImage} from "./CardImage.js";
@@ -91,6 +91,11 @@ function setBoardCardBackColor(color, conditionCB) {
 }
 
 export function flipCard(card){
+    // Prevent flipping if game hasn't started
+    if (!isGameStarted()) {
+        return;
+    }
+    
     let degrees = 0;
     if (isCardFlipping(card) || isCardFound(card)) return;
     let flipCardAni = setInterval(
