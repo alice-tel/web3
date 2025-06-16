@@ -5,6 +5,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
     const formData = new FormData(e.target);
     const data = {
         username: formData.get('username'),
+        email: formData.get('email'),
         password: formData.get('password')
     };
     
