@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voorkeuren</title>
+</head>
+<body>
+    <h1>Je voorkeuren</h1>
+
+    <form id="preferences-form">
+        <label>
+            Favoriete plaatjes-API:
+            <input type="text" name="favoriteApi" required />
+        </label><br />
+        <label>
+            Kleur voor gevonden kaartjes:
+            <input type="color" name="colorFound" required />
+        </label><br />
+        <label>
+            Kleur voor gesloten kaartjes:
+            <input type="color" name="colorClosed" required />
+        </label><br />
+        <label>
+            E-mail adres:
+            <input type="email" name="email" required />
+        </label><br />
+        <button type="submit">Voorkeuren opslaan</button>
+    </form>
+
+    <button id="logout-btn">Uitloggen</button>
+
+    <script type="module">
+        import { getToken, removeToken, fetchWithAuth } from './scripts/auth.js';
+
+        async function checkLogin() {
+            const token = getToken();
+            if (!token) {
+                alert('Je moet eerst inloggen.');
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        async function loadPreferences() {
+            if (!await checkLogin()) return;
+
+            try {
+                const response = await fetchWithAuth('/player/preferences');
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        alert('Je sessie is verlopen, log opnieuw in.');
+                        removeToken();
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('Kon voorkeuren niet ophalen.');
+                    }
+                    return;
+                }
+                const prefs = await response.json();
+                document.querySelector('[name=favoriteApi]').value = prefs.favoriteApi || '';
+                document.querySelector('[name=colorFound]').value = prefs.colorFound || '#00ff00';
+                document.querySelector('[name=colorClosed]').value = prefs.colorClosed || '#ff0000';
+                document.querySelector('[name=email]').value = prefs.email || '';
+            } catch (err) {
+                alert('Fout bij ophalen voorkeuren: ' + err.message);
+            }
+        }
+
+        document.getElementById('preferences-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!await checkLogin()) return;
+
+            const data = {
+                favoriteApi: e.target.favoriteApi.value,
+                colorFound: e.target.colorFound.value,
+                colorClosed: e.target.colorClosed.value,
+                email: e.target.email.value
+            };
+
+            try {
+                const response = await fetchWithAuth('/player/preferences', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.status === 204) {
+                    alert('Voorkeuren succesvol opgeslagen!');
+                } else if (response.status === 404) {
+                    alert('Speler niet gevonden.');
+                } else {
+                    alert('Kon voorkeuren niet opslaan.');
+                }
+            } catch (err) {
+                alert('Fout bij opslaan voorkeuren: ' + err.message);
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            removeToken();
+            window.location.href = 'login.html';
+        });
+
+        loadPreferences();
+    </script>
+</body>
+</html>
