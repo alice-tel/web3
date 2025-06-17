@@ -1,6 +1,9 @@
 import { fetchWithAuth, getToken } from "./auth.js";
 import { API_BASE_URL } from "./config.js";
 
+export const DEFAULT_FOUND_COLOR = '#007722';
+export const DEFAULT_CLOSED_COLOR = '#444444';
+
 const BACKEND_URL = API_BASE_URL;
 
 const loadingDiv = document.getElementById('loading');
@@ -98,10 +101,10 @@ async function loadPreferences() {
       throw new Error(`Failed to load preferences: ${prefsResponse.status}`);
     } else {
       const prefs = await prefsResponse.json();
-      
-      apiSelect.value = prefs.api || "placeholder";
-      colorFound.value = prefs.color_found || "#00ff00";
-      colorClosed.value = prefs.color_closed || "#ff0000";
+
+      apiSelect.value = prefs.preferred_api || "placeholder";
+      colorFound.value = prefs.color_found || DEFAULT_FOUND_COLOR;
+      colorClosed.value = prefs.color_closed || DEFAULT_CLOSED_COLOR;
     }
 
     const emailResponse = await fetchWithAuth(`${BACKEND_URL}/player/email`);
@@ -115,8 +118,8 @@ async function loadPreferences() {
     }
 
     if (!apiSelect.value) apiSelect.value = "placeholder";
-    if (!colorFound.value) colorFound.value = "#00ff00";
-    if (!colorClosed.value) colorClosed.value = "#ff0000";
+    if (!colorFound.value) colorFound.value = DEFAULT_FOUND_COLOR;
+    if (!colorClosed.value) colorClosed.value = DEFAULT_CLOSED_COLOR;
 
     updateColorPreviews();
 
@@ -139,8 +142,8 @@ async function loadPreferences() {
     showError(`Could not load preferences: ${error.message}`);
     
     apiSelect.value = "placeholder";
-    colorFound.value = "#00ff00";
-    colorClosed.value = "#ff0000";
+    colorFound.value = DEFAULT_FOUND_COLOR;
+    colorClosed.value = DEFAULT_CLOSED_COLOR;
     updateColorPreviews();
   }
 }
