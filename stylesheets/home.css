@@ -104,6 +104,7 @@ div.user-display {
 /* Info box */
 div.info {
   padding: var(--spacing-medium);
+  padding-top: var(--spacing-large);
 
   @media (min-width: 990px) {
     height: var(--vertical-info-height);
