@@ -4,6 +4,9 @@ import { initializeGame } from './Board/Game.js';
 import { setupSettings } from "./Settings/Settings.js";
 import {fetchImages} from "./Api/Image/ImageApi.js";
 import {cardImageType} from "./Settings/ImageSettings.js";
+import { onGameEnd, getCurrentGameSettings } from './game-integration.js';
+
+export { onGameEnd, getCurrentGameSettings };
 
 export function resetBoard(){
     createAddCards();

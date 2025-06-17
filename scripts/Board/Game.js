@@ -6,8 +6,8 @@ const progressBar = document.querySelector('.info__time__progressbar--bar');
 let totalPairsFound = 0;
 let totalPairsInGame = 0;
 
-// const GAME_DURATION = 300; // 300 seconds (5 minutes)
-const GAME_DURATION = 10; // 10 seconds for testing
+const GAME_DURATION = 300; // 300 seconds (5 minutes)
+// const GAME_DURATION = 10; // 10 seconds for testing
 let gameStartTime = 0;
 let elapsedTime = 0;
 let remainingTime = GAME_DURATION;
@@ -133,11 +133,11 @@ function updateTimerDisplay() {
     progressBar.style.width = `${Math.max(0, progressPercentage * 0.9)}%`; // 0.9 to match the 90% max width from CSS
     
     if (remainingTime <= 30) {
-        progressBar.style.backgroundColor = '#ff4444'; // Red when less than 30 seconds
+        progressBar.style.backgroundColor = '#ff4444'; // red when less than 30 seconds
     } else if (remainingTime <= 60) {
-        progressBar.style.backgroundColor = '#ffaa44'; // Orange when less than 1 minute
+        progressBar.style.backgroundColor = '#ffaa44'; // orange when less than 1 minute
     } else {
-        progressBar.style.backgroundColor = 'var(--color-text)'; // Default color
+        progressBar.style.backgroundColor = 'var(--color-text)'; // default color
     }
 }
 
@@ -184,7 +184,25 @@ function checkForWin() {
     if (totalPairsFound === totalPairsInGame) {
         gameActive = false;
         clearInterval(gameTimer);
+        
+        handleGameEnd(true);
+        
         showWinState();
+    }
+}
+
+async function handleGameEnd(gameCompleted) {
+    try {
+        const { onGameEnd, getCurrentGameSettings } = await import('../script.js');
+        
+        const gameSettings = getCurrentGameSettings();
+        
+        await onGameEnd(elapsedTime, gameCompleted, gameSettings);
+        
+        console.log(`Game ended - Completed: ${gameCompleted}, Time: ${elapsedTime}s`);
+        
+    } catch (error) {
+        console.error('Error handling game end:', error);
     }
 }
 
