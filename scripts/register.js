@@ -17,21 +17,21 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
         });
         
         if (response.status === 201) {
-            alert('Registratie gelukt! Je kunt nu inloggen.');
+            alert('Registered succesfully. You can now log in.');
             window.location.href = 'login.html';
             return;
         }
         
         if (response.status === 400) {
             const errorText = await response.text();
-            alert(`Fout bij registreren: ${errorText}`);
+            alert(`Error when registering: ${errorText}`);
             return;
         }
         
         const errorText = await response.text();
-        alert(`Onverwachte fout bij registreren: ${response.status} ${response.statusText}\n${errorText}`);
+        alert(`Unexpected error when registering: ${response.status} ${response.statusText}\n${errorText}`);
         
     } catch (err) {
-        alert('Er is een fout opgetreden: ' + err.message);
+        alert('An error has occurred: ' + err.message);
     }
 });

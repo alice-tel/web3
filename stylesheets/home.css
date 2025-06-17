@@ -294,6 +294,65 @@ button.colors_card_button {
 
 }
 
+div.win-message{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 100;
+  text-align: center;
+}
+
+div.win-message p {
+  margin: 0;
+  font-size: var(--font-size-title);
+}
+div.win-message button {
+  background-color: #007722;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: var(--font-size-normal);
+}
+div.win-message button:hover {
+  background-color: #005511;
+}
+div.win-message p, div.win-message button {
+  margin: 10px 0;
+  font-family: var(--font-family);
+}
+div.win-message p {
+  margin: 0;
+  font-size: var(--font-size-title);
+}
+div.win-message button {
+  background-color: #007722;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: var(--font-size-normal);
+}
+div.win-message button:hover {
+  background-color: #005511;
+}
+div.win-message p, div.win-message button {
+  margin: 10px 0;
+    font-family: var(--font-family);
+}
+div.win-message p {
+  margin-bottom: 10px;
+  font-size: var(--font-size-subtitle);
+}
+
 div.time-up-message{
   position: fixed;
   top: 50%;
@@ -306,6 +365,31 @@ div.time-up-message{
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   z-index: 100;
   text-align: center;
+}
+
+div.time-up-message p {
+  margin: 0;
+  font-size: var(--font-size-title);
+}
+div.time-up-message button {
+  background-color: #007722;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: var(--font-size-normal);
+}
+div.time-up-message button:hover {
+  background-color: #005511;
+}
+div.time-up-message p, div.time-up-message button {
+  margin: 10px 0;
+    font-family: var(--font-family);
+}
+div.time-up-message p {
+  margin-bottom: 10px;
+  font-size: var(--font-size-subtitle);
 }
 
 /* Spacer box above score */
@@ -456,5 +540,135 @@ div.spacer {
   body {
     color: var(--color-text);
     background-color: var(--color-background);
+  }
+}
+
+/* Authentication styles */
+.auth-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2rem 2.5rem;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #222;
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-form label {
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.2rem;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"],
+.auth-form input[type="email"] {
+  padding: 0.75rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  color: #000; /* Always black text */
+  background: #fff; /* Ensure background stays white */
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #007722;
+  background: #f6fff6;
+}
+
+.auth-button {
+  background: #007722;
+  color: white;
+  border: none;
+  padding: 0.9rem 0;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 1rem;
+}
+
+.auth-button:hover {
+  background: #005511;
+}
+
+.auth-link {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.auth-link a {
+  color: #007722;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive/mobile-first adjustments */
+.auth-container {
+  max-width: 95vw;
+  margin: 2rem auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+}
+
+/* Navigation link styling */
+.navigation {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.navigation a {
+  color: #007722;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+}
+
+.navigation a:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 480px) {
+  .auth-container {
+    max-width: 400px;
+    padding: 2rem 2.5rem;
+  }
+  .auth-title {
+    font-size: 2.2rem;
   }
 }

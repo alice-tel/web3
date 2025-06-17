@@ -6,7 +6,7 @@ const progressBar = document.querySelector('.info__time__progressbar--bar');
 let totalPairsFound = 0;
 let totalPairsInGame = 0;
 
-const GAME_DURATION = 300; // 300 seconds (5 minutes)
+const GAME_DURATION = 2; // 300 seconds (5 minutes)
 // const GAME_DURATION = 10; // 10 seconds for testing
 let gameStartTime = 0;
 let elapsedTime = 0;
@@ -194,13 +194,10 @@ function checkForWin() {
 async function handleGameEnd(gameCompleted) {
     try {
         const { onGameEnd, getCurrentGameSettings } = await import('../script.js');
-        
         const gameSettings = getCurrentGameSettings();
-        
+
         await onGameEnd(elapsedTime, gameCompleted, gameSettings);
-        
-        console.log(`Game ended - Completed: ${gameCompleted}, Time: ${elapsedTime}s`);
-        
+                
     } catch (error) {
         console.error('Error handling game end:', error);
     }
@@ -217,17 +214,6 @@ function showWinState() {
         <p>Time remaining: ${formatTime(remainingTime)}</p>
         <button id="play-again-btn">Play Again</button>
         `
-
-    winMessage.style.position = 'fixed';
-    winMessage.style.top = '50%';
-    winMessage.style.left = '50%';
-    winMessage.style.transform = 'translate(-50%, -50%)';
-    winMessage.style.backgroundColor = '#333';
-    winMessage.style.padding = '20px';
-    winMessage.style.borderRadius = '10px';
-    winMessage.style.boxShadow = '0 0 10px rgba(0,0,0,0.3)';
-    winMessage.style.zIndex = '100';
-    winMessage.style.textAlign = 'center';
 
     document.body.appendChild(winMessage);
 
@@ -281,8 +267,8 @@ export function getGameTimeInfo() {
 }
 
 // Export the gameStarted flag so other modules can check it
-export function isGameStarted() {
-    return gameStarted;
+export function isGameActive() {
+    return gameActive;
 }
 
 // todo: board size set

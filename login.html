@@ -3,20 +3,36 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="stylesheets/reset.css"/>
+    <link rel="stylesheet" href="stylesheets/home.css" />
     <title>Inloggen</title>
 </head>
 <body>
-    <h1>Inloggen</h1>
-    <form id="login-form">
-        <label>
-            Gebruikersnaam: <input type="text" name="username" required />
-        </label><br />
-        <label>
-            Wachtwoord: <input type="password" name="password" required />
-        </label><br />
-        <button type="submit">Inloggen</button>
-    </form>
-    <p>Heb je nog geen account? <a href="register.html">Registreren</a></p>
+    <div class="navigation">
+        <a class="auth-title" href="index.html">← Back to game</a>
+    </div>
+
+    <div class="auth-container">
+        <h1 class="auth-title">Log in</h1>
+        
+        <div id="error-message" class="error" style="display: none;"></div>
+        <div id="success-message" class="success" style="display: none;"></div>
+
+        <form id="login-form" class="auth-form" autocomplete="on">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required autocomplete="username" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password" />
+            </div>
+            <button type="submit" class="auth-button">Inloggen</button>
+        </form>
+        
+        <p class="auth-link">Don't have an account yet? <a href="register.html">Register</a></p>
+    </div>
+    
     <script type="module" src="scripts/login.js"></script>
 </body>
 </html>

@@ -1,110 +1,64 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Voorkeuren</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Preferences - Memory Game</title>
+  <link rel="stylesheet" href="stylesheets/home.css" />
+  <link rel="stylesheet" href="stylesheets/reset.css"/>
+  <link rel="stylesheet" href="stylesheets/preferences.css" />
 </head>
 <body>
-    <h1>Je voorkeuren</h1>
+  <div class="navigation">
+    <a class="auth-title" href="index.html">← Back to game</a>
+  </div>
 
-    <form id="preferences-form">
-        <label>
-            Favoriete plaatjes-API:
-            <input type="text" name="favoriteApi" required />
-        </label><br />
-        <label>
-            Kleur voor gevonden kaartjes:
-            <input type="color" name="colorFound" required />
-        </label><br />
-        <label>
-            Kleur voor gesloten kaartjes:
-            <input type="color" name="colorClosed" required />
-        </label><br />
-        <label>
-            E-mail adres:
-            <input type="email" name="email" required />
-        </label><br />
-        <button type="submit">Voorkeuren opslaan</button>
+  <div class="preferences-container">
+    <h1>Player Preferences</h1>
+    
+    <div id="loading" class="loading">Loading your preferences...</div>
+    <div id="error-message" class="error" style="display: none;"></div>
+    <div id="success-message" class="success" style="display: none;"></div>
+
+    <form id="preferencesForm" class="preferences-form" style="display: none;">
+      <div class="form-group">
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email address" />
+      </div>
+
+      <div class="form-group">
+        <label for="api">Picture API:</label>
+        <select id="api" name="api">
+          <option value="0">Placeholder</option>
+          <option value="1">Dog Images</option>
+          <option value="2">Cat Images</option>
+        </select>
+      </div>
+
+      <div class="color-input-group">
+        <div class="form-group">
+          <label for="color_found">
+            Color for Found Cards:
+            <span class="color-preview" id="foundPreview"></span>
+          </label>
+          <input type="color" id="color_found" name="color_found" />
+        </div>
+
+        <div class="form-group">
+          <label for="color_closed">
+            Color for Closed Cards:
+            <span class="color-preview" id="closedPreview"></span>
+          </label>
+          <input type="color" id="color_closed" name="color_closed" />
+        </div>
+      </div>
+
+      <button type="submit" class="save-button" id="saveButton">
+        Save Preferences
+      </button>
     </form>
+  </div>
 
-    <button id="logout-btn">Uitloggen</button>
-
-    <script type="module">
-        import { getToken, removeToken, fetchWithAuth } from './scripts/auth.js';
-
-        async function checkLogin() {
-            const token = getToken();
-            if (!token) {
-                alert('Je moet eerst inloggen.');
-                window.location.href = 'login.html';
-                return false;
-            }
-            return true;
-        }
-
-        async function loadPreferences() {
-            if (!await checkLogin()) return;
-
-            try {
-                const response = await fetchWithAuth('/player/preferences');
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        alert('Je sessie is verlopen, log opnieuw in.');
-                        removeToken();
-                        window.location.href = 'login.html';
-                    } else {
-                        alert('Kon voorkeuren niet ophalen.');
-                    }
-                    return;
-                }
-                const prefs = await response.json();
-                document.querySelector('[name=favoriteApi]').value = prefs.favoriteApi || '';
-                document.querySelector('[name=colorFound]').value = prefs.colorFound || '#00ff00';
-                document.querySelector('[name=colorClosed]').value = prefs.colorClosed || '#ff0000';
-                document.querySelector('[name=email]').value = prefs.email || '';
-            } catch (err) {
-                alert('Fout bij ophalen voorkeuren: ' + err.message);
-            }
-        }
-
-        document.getElementById('preferences-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (!await checkLogin()) return;
-
-            const data = {
-                favoriteApi: e.target.favoriteApi.value,
-                colorFound: e.target.colorFound.value,
-                colorClosed: e.target.colorClosed.value,
-                email: e.target.email.value
-            };
-
-            try {
-                const response = await fetchWithAuth('/player/preferences', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                
-                if (response.status === 204) {
-                    alert('Voorkeuren succesvol opgeslagen!');
-                } else if (response.status === 404) {
-                    alert('Speler niet gevonden.');
-                } else {
-                    alert('Kon voorkeuren niet opslaan.');
-                }
-            } catch (err) {
-                alert('Fout bij opslaan voorkeuren: ' + err.message);
-            }
-        });
-
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            removeToken();
-            window.location.href = 'login.html';
-        });
-
-        loadPreferences();
-    </script>
+  <script type="module" src="scripts/preferences.js"></script>
 </body>
 </html>

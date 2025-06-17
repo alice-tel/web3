@@ -9,7 +9,7 @@ import {
     BOOLEAN_ATR_TRUE,
 } from "../Util/Attributes.js";
 
-import { addOneToPairsFound, isGameStarted } from "./Game.js";
+import { addOneToPairsFound, isGameActive } from "./Game.js";
 import {cardRowSize} from "../Settings/CardSizeSetting.js";
 import {cardCharacters} from "../Settings/CardCharactersSetting.js";
 import {hideImageOfCard, setCardImage} from "./CardImage.js";
@@ -91,8 +91,8 @@ function setBoardCardBackColor(color, conditionCB) {
 }
 
 export function flipCard(card){
-    // Prevent flipping if game hasn't started
-    if (!isGameStarted()) {
+    // Prevent flipping if game isn't active
+    if (!isGameActive()) {
         return;
     }
     
@@ -248,10 +248,4 @@ function updateCardInclusion(dataCardId, isFlipped){
         selectedCards = selectedCards.slice(1, 2);
     else if (index === 1)
         selectedCards = selectedCards.slice(0, 1);
-
-    // console.log('[');
-    // for (const index1 of selectedCards) {
-    //     console.log(index1);
-    // }
-    // console.log(']');
 }

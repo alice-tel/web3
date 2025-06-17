@@ -19,10 +19,10 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
 
     if (!response.ok) {
       if (response.status === 401) {
-        alert('Ongeldige gebruikersnaam of wachtwoord.');
+        alert('Invalid username or password. Please try again.');
       } else {
         const errorText = await response.text();
-        alert(`Fout bij inloggen: ${response.status} ${response.statusText}\n${errorText}`);
+        alert(`Login failed: ${response.status} ${response.statusText}\n${errorText}`);
       }
       return;
     }
@@ -34,9 +34,9 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
       saveToken(json.token);
       window.location.href = 'preferences.html';
     } else {
-      alert('Login is mislukt, geen token ontvangen.');
+      alert('Login failed. No token given.');
     }
   } catch (err) {
-    alert('Er is een fout opgetreden: ' + err.message);
+    alert('An error has occurred: ' + err.message);
   }
 });

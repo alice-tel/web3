@@ -32,7 +32,27 @@ function addCardImageTypeListener()
     });
 }
 
-
 function addCardImageTypeInputOptions(){
     createAddOptions(CARD_IMAGE_TYPE_OPTIONS, cardImageInput, DEFAULT_IMAGE_TYPE_OPTION);
+}
+
+export function updateCardImageTypeFromPreferences(apiPreference) {
+    const preferenceMapping = {
+        'placeholder': 0,
+        'Dog': 1,
+        'Cat': 2
+    };
+    
+    if (apiPreference && preferenceMapping.hasOwnProperty(apiPreference)) {
+        cardImageType = preferenceMapping[apiPreference];
+        console.log('Updated cardImageType from preferences:', cardImageType, 'for API:', apiPreference);
+        
+        if (cardImageInput) {
+            cardImageInput.value = cardImageType.toString();
+        }
+    }
+}
+
+export function getCardImageType() {
+    return cardImageType;
 }

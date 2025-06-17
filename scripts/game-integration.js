@@ -1,6 +1,8 @@
 import { fetchWithAuth, getToken, removeToken } from './auth.js';
 import { API_BASE_URL } from './config.js';
 
+let preferencesLoaded = false;
+
 async function getPlayerInfo() {
     try {
         const token = getToken();
@@ -17,6 +19,122 @@ async function getPlayerInfo() {
     return null;
 }
 
+async function loadUserPreferences() {
+    try {
+        const token = getToken();
+        if (!token) {
+            return null;
+        }
+
+        const response = await fetchWithAuth(`${API_BASE_URL}/player/preferences`);
+        
+        if (response.status === 404) {
+            return null;
+        }
+        
+        if (!response.ok) {
+            console.error('Failed to load preferences:', response.status);
+            return null;
+        }
+
+        const preferences = await response.json();
+        return preferences;
+        
+    } catch (error) {
+        console.error('Error loading user preferences:', error);
+        return null;
+    }
+}
+
+function mapApiToUIValue(apiValue) {
+    return apiValue;
+}
+
+function applyPreferencesToUI(preferences) {
+    if (!preferences) return;
+
+    const apiPref = preferences.api || preferences.preferred_api;
+
+    try {
+        const waitForElement = (selector, callback, maxAttempts = 50) => {
+            let attempts = 0;
+            const checkElement = () => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    callback(element);
+                    return true;
+                } else if (attempts < maxAttempts) {
+                    attempts++;
+                    setTimeout(checkElement, 100);
+                } else {
+                    console.warn(`Element ${selector} not found after ${maxAttempts} attempts`);
+                }
+                return false;
+            };
+            checkElement();
+        };
+
+        if (apiPref) {
+            waitForElement('#image_of_board_input', (imageSelect) => {
+                const mappedValue = mapApiToUIValue(apiPref);
+                const optionExists = Array.from(imageSelect.options).some(option => option.value === mappedValue);
+                if (optionExists) {
+                    imageSelect.value = mappedValue;
+                    imageSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                } else {
+                    console.warn('Mapped API value not found in select options:', mappedValue);
+                }
+            });
+        }
+
+        if (preferences.color_found) {
+            waitForElement('.colors__found--card', (foundColorInput) => {
+                foundColorInput.value = preferences.color_found;
+                foundColorInput.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+        }
+
+        if (preferences.color_closed) {
+            waitForElement('.colors__card--card', (cardColorInput) => {
+                cardColorInput.value = preferences.color_closed;
+                cardColorInput.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+        }
+
+        
+    } catch (error) {
+        console.error('Error applying preferences to UI:', error);
+    }
+}
+
+export async function initializeUserPreferences() {
+    if (preferencesLoaded) {
+        return;
+    }
+
+    try {
+        const preferences = await loadUserPreferences();
+        if (preferences) {
+            applyPreferencesToUI(preferences);
+            preferencesLoaded = true;
+        }
+    } catch (error) {
+        console.error('Error initializing preferences:', error);
+    }
+}
+
+document.addEventListener('preferencesUpdated', (event) => {
+    applyPreferencesToUI(event.detail);
+});
+
+window.addEventListener('message', (event) => {
+    if (event.origin !== window.location.origin) return;
+    
+    if (event.data.type === 'preferencesUpdated') {
+        applyPreferencesToUI(event.data.preferences);
+    }
+});
+
 function extractPlayerIdFromToken(token) {
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -28,9 +146,7 @@ function extractPlayerIdFromToken(token) {
 }
 
 export async function saveGameScore(gameData) {
-    try {
-        console.log('Saving game score:', gameData);
-        
+    try {        
         const response = await fetchWithAuth(`${API_BASE_URL}/game/save`, {
             method: 'POST',
             headers: {
@@ -40,7 +156,6 @@ export async function saveGameScore(gameData) {
         });
 
         if (response.ok) {
-            console.log('Game score saved successfully');
             return true;
         } else {
             const errorText = await response.text();
@@ -54,23 +169,19 @@ export async function saveGameScore(gameData) {
 }
 
 export async function onGameEnd(elapsedTime, gameCompleted, gameSettings = {}) {
-    console.log('Game ended:', { elapsedTime, gameCompleted, gameSettings });
     
     const token = getToken();
     if (!token) {
-        console.log('User not logged in, game score not saved');
         return;
     }
 
     if (!gameCompleted) {
-        console.log('Game not completed, score not saved');
         return;
     }
 
     try {
         const playerId = extractPlayerIdFromToken(token);
         if (!playerId) {
-            console.error('Could not get player ID from token');
             return;
         }
 
@@ -89,12 +200,9 @@ export async function onGameEnd(elapsedTime, gameCompleted, gameSettings = {}) {
             gameData.color_closed = gameSettings.colorClosed;
         }
 
-        console.log('Prepared game data:', gameData);
-
         const success = await saveGameScore(gameData);
         
         if (success) {
-            console.log('Score saved, refreshing leaderboard...');
             setTimeout(() => {
                 if (window.leaderboard) {
                     window.leaderboard.refresh();
@@ -112,7 +220,12 @@ export function getCurrentGameSettings() {
     
     const imageSelect = document.getElementById('image_of_board_input');
     if (imageSelect && imageSelect.value) {
-        settings.api = imageSelect.value;
+        const uiToApiMapping = {
+            '0': 'placeholder',
+            '1': 'Dog',
+            '2': 'Cat',
+        };
+        settings.api = uiToApiMapping[imageSelect.value] || imageSelect.value;
     }
     
     const foundColorInput = document.querySelector('.colors__found--card');
@@ -130,11 +243,42 @@ export function getCurrentGameSettings() {
 
 export async function displayUserInfo() {
     const token = getToken();
+    let userDisplay = document.querySelector('.user-display');
+
     if (!token) {
-        const userDisplay = document.querySelector('.user-display');
-        if (userDisplay) {
-            userDisplay.remove();
+        if (!userDisplay) {
+            userDisplay = document.createElement('div');
+            userDisplay.className = 'user-display';
+            userDisplay.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 14px;
+            `;
+            document.body.appendChild(userDisplay);
         }
+        userDisplay.innerHTML = `
+            <span>You are not logged in.</span>
+            <a href="login.html" style="
+                background: #2196F3; 
+                color: white; 
+                text-decoration: none;
+                padding: 4px 8px; 
+                border-radius: 3px; 
+                font-size: 12px;
+                transition: background 0.2s;
+            " onmouseover="this.style.background='#1976D2'" onmouseout="this.style.background='#2196F3'">
+                Login / Register
+            </a>
+        `;
         return;
     }
 
@@ -142,15 +286,39 @@ export async function displayUserInfo() {
         const playerInfo = await getPlayerInfo();
         if (!playerInfo) return;
 
-        let userDisplay = document.querySelector('.user-display');
         if (!userDisplay) {
             userDisplay = document.createElement('div');
             userDisplay.className = 'user-display';
+            userDisplay.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 14px;
+            `;
             document.body.appendChild(userDisplay);
         }
         
         userDisplay.innerHTML = `
             <span>Welcome, <strong>${playerInfo.username || 'Player'}</strong>!</span>
+            <a href="preferences.html" style="
+                background: #4CAF50; 
+                color: white; 
+                text-decoration: none;
+                padding: 4px 8px; 
+                border-radius: 3px; 
+                font-size: 12px;
+                transition: background 0.2s;
+            " onmouseover="this.style.background='#45a049'" onmouseout="this.style.background='#4CAF50'">
+                Preferences
+            </a>
             <button onclick="logout()" style="
                 background: #ff4444; 
                 color: white; 
@@ -172,17 +340,37 @@ export async function displayUserInfo() {
 window.logout = function() {
     removeToken();
     
-    // Remove user display
     const userDisplay = document.querySelector('.user-display');
     if (userDisplay) {
         userDisplay.remove();
     }
     
+    preferencesLoaded = false;
+    
     window.location.reload();
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    displayUserInfo();
+
+document.addEventListener('DOMContentLoaded', async () => {    
+
+    await displayUserInfo();
+        setTimeout(async () => {
+        await initializeUserPreferences();
+    }, 200);
     
     setInterval(displayUserInfo, 5000);
 });
+
+(async () => {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', async () => {
+            setTimeout(async () => {
+                await initializeUserPreferences();
+            }, 300);
+        });
+    } else {
+        setTimeout(async () => {
+            await initializeUserPreferences();
+        }, 100);
+    }
+})();
