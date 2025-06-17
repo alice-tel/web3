@@ -261,7 +261,7 @@ export async function displayUserInfo() {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                font-size: 14px;
+                font-size: 20px;
             `;
             document.body.appendChild(userDisplay);
         }
@@ -273,7 +273,7 @@ export async function displayUserInfo() {
                 text-decoration: none;
                 padding: 4px 8px; 
                 border-radius: 3px; 
-                font-size: 12px;
+                font-size: 20px;
                 transition: background 0.2s;
             " onmouseover="this.style.background='#1976D2'" onmouseout="this.style.background='#2196F3'">
                 Login / Register
@@ -314,7 +314,7 @@ export async function displayUserInfo() {
                 text-decoration: none;
                 padding: 4px 8px; 
                 border-radius: 3px; 
-                font-size: 12px;
+                font-size: 20px;
                 transition: background 0.2s;
             " onmouseover="this.style.background='#45a049'" onmouseout="this.style.background='#4CAF50'">
                 Preferences
@@ -326,7 +326,7 @@ export async function displayUserInfo() {
                 padding: 6px 12px; 
                 border-radius: 4px; 
                 cursor: pointer;
-                font-size: 12px;
+                font-size: 20px;
                 transition: background 0.2s;
             " onmouseover="this.style.background='#ff6666'" onmouseout="this.style.background='#ff4444'">
                 Logout
