@@ -30,7 +30,7 @@ export function randomizeMemList(listOfOptions){
 
     // multiply all characters
     let completeList = listOfOptions.reduce((res, current) => res.concat(multiplyMemVal(current)), []);
-    // shuffleList(completeList);
+    shuffleList(completeList);
     return completeList;
 }
 
