@@ -1,7 +1,7 @@
 import {
-    boardCardsColor,
-    boardOpenColor,
-    boardFoundColor,
+    getCardClosedColor,
+    getCardOpenColor,
+    getCardFoundColor,
 } from '../Settings/ColorSettings.js'
 
 import {
@@ -21,9 +21,9 @@ import {
     isCardFlipping,
     isCardFound,
     setCardFound,
-    DATA_CARD_FLIPPED_ATR, DATA_CARD_MEM_VAL_ATR, DATA_CARD_ID_ATR, getCardTextPTag, getCardMemVal
+    DATA_CARD_FLIPPED_ATR, DATA_CARD_MEM_VAL_ATR, DATA_CARD_ID_ATR, getCardTextPTag, getCardMemVal, setColorOfCard
 } from "./Card.js";
-import {cardImageType, CHARACTER_IMAGE_TYPE_OPTION} from "../Settings/ImageSettings.js";
+import {CHARACTER_IMAGE_TYPE_OPTION, getCardImageType} from "../Settings/ImageSettings.js";
 
 export const MAX_COUNT_FLIPPED_CARDS = 2;
 export const DATA_CARD_FLIPPING_ANIMATION_ATR = 'data-card-flipping-animation';
@@ -86,7 +86,7 @@ export function setCardImages(mappedUrls) {
 function setBoardCardBackColor(color, conditionCB) {
     for (const boardCard of boardCards) {
         if (conditionCB(boardCard))
-            boardCard.style.backgroundColor = color;
+            setColorOfCard(boardCard, color);
     }
 }
 
@@ -206,14 +206,14 @@ function flipBackTimer(){
 
 function updateCardColor(card, isFlipped = undefined)
 {
-    let flippedColor = isCardFound(card) ? boardFoundColor : boardOpenColor;
+    let flippedColor = isCardFound(card) ? getCardFoundColor() : getCardOpenColor();
     if (isFlipped === undefined) isFlipped = isCardFlipped(card);
-    card.style.backgroundColor = isFlipped ? flippedColor : boardCardsColor;
+    card.style.backgroundColor = isFlipped ? flippedColor : getCardClosedColor();
 }
 
 function updateCardText(card, isFlipped)
 {
-    if (cardImageType !== CHARACTER_IMAGE_TYPE_OPTION && isFlipped) {
+    if (getCardImageType() !== CHARACTER_IMAGE_TYPE_OPTION && isFlipped) {
         setCardText(card,'');
         return;
     }
@@ -230,7 +230,7 @@ function setCardText(card, value){
 
 function updateCardImage(card, isFlipped)
 {
-    if (cardImageType === CHARACTER_IMAGE_TYPE_OPTION){
+    if (getCardImageType() === CHARACTER_IMAGE_TYPE_OPTION){
         hideImageOfCard(card);
         return;
     }

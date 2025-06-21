@@ -11,12 +11,24 @@ export const DEFAULT_IMAGE_TYPE_OPTION = 1;
 
 export const CARD_IMAGE_TYPE_OPTIONS = [
     ["Characters", 0, emptyFetchImages],
-    ["Dog", 1, dogFetchImages],
-    ["Cat", 2, catFetchImages],
+    ["Dog Images", 1, dogFetchImages],
+    ["Cat Images", 2, catFetchImages],
 ]
 
-export let cardImageType = DEFAULT_IMAGE_TYPE_OPTION;
+// export let cardImageType = DEFAULT_IMAGE_TYPE_OPTION;
 const cardImageInput = document.getElementById('image_of_board_input');
+
+export function getCardImageType(){
+    return cardImageInput.selectedIndex;
+}
+export function getCardImageTypeOption(){
+    return CARD_IMAGE_TYPE_OPTIONS[cardImageInput.selectedIndex];
+}
+
+export function setCardImageType(imageType){
+    cardImageInput.selectedIndex = imageType;
+    resetBoard();
+}
 
 export function setupCardImageTypeSetting()
 {
@@ -27,32 +39,10 @@ export function setupCardImageTypeSetting()
 function addCardImageTypeListener()
 {
     cardImageInput.addEventListener(INPUT_EV, event => {
-        cardImageType = Number(event.target.value);
-        resetBoard();
+        setCardImageType(Number(event.target.value));
     });
 }
 
 function addCardImageTypeInputOptions(){
     createAddOptions(CARD_IMAGE_TYPE_OPTIONS, cardImageInput, DEFAULT_IMAGE_TYPE_OPTION);
-}
-
-export function updateCardImageTypeFromPreferences(apiPreference) {
-    const preferenceMapping = {
-        'placeholder': 0,
-        'Dog': 1,
-        'Cat': 2
-    };
-    
-    if (apiPreference && preferenceMapping.hasOwnProperty(apiPreference)) {
-        cardImageType = preferenceMapping[apiPreference];
-        console.log('Updated cardImageType from preferences:', cardImageType, 'for API:', apiPreference);
-        
-        if (cardImageInput) {
-            cardImageInput.value = cardImageType.toString();
-        }
-    }
-}
-
-export function getCardImageType() {
-    return cardImageType;
 }

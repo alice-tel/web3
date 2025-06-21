@@ -8,10 +8,6 @@ export const CARD_COLOR_DEFAULT = '#444444';
 export const OPEN_COLOR_DEFAULT = '#808080';
 export const FOUND_COLOR_DEFAULT = '#007722';
 
-export let boardCardsColor = CARD_COLOR_DEFAULT;
-export let boardOpenColor = OPEN_COLOR_DEFAULT;
-export let boardFoundColor = FOUND_COLOR_DEFAULT;
-
 const DATA_COLOR_TYPE_ATR = 'data-color-type';
 const CARD_COLOR_TYPE = 'card';
 const OPEN_COLOR_TYPE = 'open';
@@ -27,11 +23,37 @@ export function setupColorSettings(){
     addColorEventListeners();
 }
 
+export function getCardClosedColor(){
+    return cardColorPicker.getAttribute('value');
+}
+export function getCardOpenColor(){
+    return openColorPicker.getAttribute('value');
+}
+export function getCardFoundColor(){
+    return foundColorPicker.getAttribute('value');
+}
+
+export function disableCardClosedColor(disable){
+    cardColorPicker.disabled = disable;
+}
+
+export function setCardClosedColor(color){
+    cardColorPicker.setAttribute('value', color);
+    setBoardCardsColor(color);
+}
+export function setCardOpenColor(color){
+    openColorPicker.setAttribute('value', color);
+    setBoardOpenColor(color);
+}
+export function setCardFoundColor(color){
+    foundColorPicker.setAttribute('value', color);
+    setBoardFoundColor(color);
+}
 
 function addDefaultColors(){
-    cardColorPicker.setAttribute('value', CARD_COLOR_DEFAULT);
-    openColorPicker.setAttribute('value', OPEN_COLOR_DEFAULT);
-    foundColorPicker.setAttribute('value', FOUND_COLOR_DEFAULT);
+    setCardClosedColor(CARD_COLOR_DEFAULT);
+    setCardOpenColor(OPEN_COLOR_DEFAULT);
+    setCardFoundColor(FOUND_COLOR_DEFAULT);
 }
 
 function addColorEventListeners(){
@@ -43,21 +65,22 @@ function addColorEventListeners(){
 function colorSelectedChanged(event){
     const colorPicker = event.target;
     const color = colorPicker.value;
+    setColor(colorPicker.getAttribute(DATA_COLOR_TYPE_ATR), color);
 
-    switch(colorPicker.getAttribute(DATA_COLOR_TYPE_ATR)){
+}
+
+function setColor(type, color){
+    switch(type){
         case CARD_COLOR_TYPE: {
-            boardCardsColor = color;
-            setBoardCardsColor(color);
+            setCardClosedColor(color);
             break;
         }
         case OPEN_COLOR_TYPE: {
-            boardOpenColor = color;
-            setBoardOpenColor(color);
+            setCardOpenColor(color);
             break;
         }
         case FOUND_COLOR_TYPE: {
-            boardFoundColor = color;
-            setBoardFoundColor(color);
+            setCardFoundColor(color);
             break;
         }
 

@@ -2,6 +2,7 @@ import {BOOLEAN_ATR_FALSE, BOOLEAN_ATR_TRUE, CLASS_ATR, CLICK_EV, isAttributeTru
 import {createCardImage, hideImage, hideImageOfCard} from "./CardImage.js";
 import {DEFAULT_BACK_CHARACTERS} from "../Settings/CardCharactersSetting.js";
 import {DATA_CARD_FLIPPING_ANIMATION_ATR, flipCard } from "./Cards.js";
+import {getCardClosedColor} from "../Settings/ColorSettings.js";
 
 export const DEFAULT_CARD_CLASS_NAME = 'card';
 export const DATA_CARD_FLIPPED_ATR = 'data-card-flipped';
@@ -21,6 +22,7 @@ export function createCard(cardId){
     newCard.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_FALSE);
     newCard.setAttribute(DATA_CARD_FLIPPED_ATR, BOOLEAN_ATR_FALSE);
     newCard.setAttribute(DATA_CARD_FLIPPING_ANIMATION_ATR, BOOLEAN_ATR_FALSE);
+    setColorOfCard(newCard, getCardClosedColor())
 
     let image = createCardImage(cardId);
     let pTagText = createPTagForText(cardId, DEFAULT_BACK_CHARACTERS);
@@ -55,6 +57,10 @@ export function getCardId(card){
 
 export function setCardFound(card) {
     card.setAttribute(DATA_CARD_FOUND_ATR, BOOLEAN_ATR_TRUE);
+}
+
+export function setColorOfCard(card, color){
+    card.style.backgroundColor = color;
 }
 
 export function setCardId(card, cardId) {

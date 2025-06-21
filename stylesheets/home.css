@@ -269,7 +269,17 @@ div.playtime__time {
 }
 
 div.settings {
+
+  & > p.settings__title {
+    font-size: var(--font-size-subtitle);
+  }
+
   margin-top: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+
 }
 
 div.settings__board {

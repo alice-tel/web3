@@ -38,27 +38,37 @@
           <p class="playtime__title">Average Play Time:</p>
           <p class="playtime__time">Loading...</p>
         </div>
-        
-        <!-- Hidden elements for game integration - these won't be visible but are needed by the JavaScript -->
-        <div style="display: none;">
-          <select id="size_of_board_input">
-            <option value="2">2x2</option>
-            <option value="4">4x4</option>
-            <option value="6" selected>6x6</option>
-            <option value="8">8x8</option>
-          </select>
-          
-          <input type="text" maxlength="6" id="characters_on_cards_input" value="-"/>
-          
-          <select id="image_of_board_input">
-            <option value="0">Characters</option>
-            <option value="1">Dog Images</option>
-            <option value="2">Cat Images</option>
-          </select>
-          
-          <input class="colors__card--card" type="color" value="#444444" data-color-type="card">
-          <input class="colors__open--card" type="color" value="#808080" data-color-type="open">
-          <input class="colors__found--card" type="color" value="#007722" data-color-type="found"/>
+
+        <div class="settings">
+          <p class="settings__title">Settings:</p>
+          <div class="settings__board">
+            <div class="card__character">
+              <label>
+                Characters on board: <input type="text" maxlength="6" class="card__character--selector board__selector" id="characters_on_cards_input"/>
+              </label>
+            </div>
+            <div class="board__size">
+              <label>
+                Size of board: <select class="board__size--selector board__selector" id="size_of_board_input"></select>
+              </label>
+            </div>
+          </div>
+          <div class="settings__colors">
+            <label>
+              Card Color: <input class="colors__card--card colors_card_button" type="color" data-color-type="card">
+            </label>
+            <label>
+              Open Color: <input class="colors__open--card colors_card_button" type="color" data-color-type="open">
+            </label>
+            <label>
+              Found Color: <input class="colors__found--card colors_card_button" type="color" data-color-type="found"/>
+            </label>
+          </div>
+          <div class="settings__image">
+            <label>
+              Image type of cards: <select class="board__image--selector board__selector" id="image_of_board_input"></select>
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -69,6 +79,6 @@
   <!-- Load leaderboard -->
   <script src="scripts/Board/leaderboard.js" type="module"></script>
   <!-- Load main script last -->
-  <script src="./scripts/script.js" type="module"></script>
+  <script src="scripts/script.js" type="module"></script>
 </body>
 </html>
