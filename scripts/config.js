@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://localhost:8010";
+export const API_BASE_URL = "http://localhost:8001";
 
 export const GAME_CONFIG = {
     TIME_LIMIT: 0,

@@ -6,7 +6,7 @@ const progressBar = document.querySelector('.info__time__progressbar--bar');
 let totalPairsFound = 0;
 let totalPairsInGame = 0;
 
-const GAME_DURATION = 2; // 300 seconds (5 minutes)
+const GAME_DURATION = 300; // 300 seconds (5 minutes)
 // const GAME_DURATION = 10; // 10 seconds for testing
 let gameStartTime = 0;
 let elapsedTime = 0;
@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (justStartedGame === 'true') {
         gameStarted = true;
         localStorage.removeItem('memoryGameJustStarted'); // Clean up
+        
+        setTimeout(() => {
+            if (gameStarted && !gameActive) {
+                startGameTimer();
+            }
+        }, 100);
     }
     
     createNewGameButton();
